@@ -2,28 +2,39 @@ import numpy as np
 from numbers import Number 
 from math import log
 class DualNum:
-    """
-    Initializes Dual Number where Dual Number is of form real number + epsilon
-    real: real portion of Dual
-    epsilon: epsilon portion of Dual
-    """
+
     def __init__(self, real: int, epsilon: int):
+        """Initializes DualNum
+
+        Args:
+            real (int): real portion of Dual Number
+            epsilon (int):epsilon portion of Dual Number
+        """
         self.real = real
         self.epsilon = epsilon
 
-    """
-    Returns string representation of DualNumbers
-    returns Real and Epsilon component of string
-    """
     def __str__(self):
-        return f'{self.real} + {self.epsilon}\u03B5'
-    
-    """
-    Sums DualNumber together
-    other: DualNumber to be added
-    returns: elementwise summation of DualNumbers
-    """
+        
+        """Gets string representation of DualNum
+
+        Returns:
+            str: String representation of DualNum
+        """
+        return f'{self.real} + {self.epsilon}\u03B5' 
+
     def _add(self, other):
+        """Overloads + operator for Dual Number
+
+        Args:
+            other (DualNum): DualNum to be added
+
+        Raises:
+            TypeError: Value must be DualNum or Number
+
+        Returns:
+            DualNum: Summation of Dual Numbers
+        """
+       
         if isinstance(other, DualNum):
             return DualNum(self.real + other.real, self.epsilon + other.epsilon)
         if isinstance(other, Number):
@@ -31,28 +42,47 @@ class DualNum:
         else:
             raise TypeError("Unsupported type for add")
         
-    """
-    Addition operator for Dual Numbers 
-    returns: elementwise summation of DualNumbers
-    """
     def __add__(self,other):
+        """Overloads + operator for Dual Number
+
+        Args:
+            other (DualNum): DualNum to be added
+
+        Raises:
+            TypeError: Value must be DualNum or Number
+
+        Returns:
+            DualNum: Summation of Dual Numbers
+        """
         return self._add(other)
     
-    """
-    Addition operator for Dual Numbers where one number has no dual part
-    returns: elementwise summation of DualNumbers
-    """
     def __radd__(self, other):
+        """Overloads reverse + operator for Dual Number
+
+        Args:
+            other (DualNum): DualNum to be added
+
+        Raises:
+            TypeError: Value must be DualNum or Number
+
+        Returns:
+            DualNum: Summation of Dual Numbers
+        """
         return self._add(other) 
     
-
-
-    """
-    Subtraction operator for DualNumbers
-    first: denotes position with subtraction operator
-    returns: elementwise difference of DualNumbers 
-    """
     def _sub(self, other, first=True):
+        """Overloads - operator for Dual Number
+
+        Args:
+            other (DualNum): value to be subtracted
+            first (bool, optional): Flag for order in relation to operator. Defaults to True.
+
+        Raises:
+            TypeError: Value must be DualNum or Number
+
+        Returns:
+            DualNum: Difference between Dual Numbers
+        """
         if first and isinstance(other, DualNum):
             return DualNum(self.real - other.real, self.epsilon - other.epsilon)
         elif first and isinstance(other, Number):
@@ -62,58 +92,103 @@ class DualNum:
         else:
             raise TypeError("Unsupported Type for __sub__")
         
-    """
-    Generic subtraction operator for DualNumber operator 
-    """
     def __sub__(self, other):
+        """Overloads - operator for Dual Number
+
+        Args:
+            other (DualNum): value to be subtracted
+
+        Raises:
+            TypeError: Value must be DualNum or Number
+
+        Returns:
+            DualNum: Difference between Dual Numbers
+        """
         return self._sub(other)
     
-    """
-    Subtraction operator for DualNumber with Real Number
-    """
     def __rsub__(self, other):
+        """Overloads reverse - operator for Dual Number
+
+        Args:
+            other (DualNum): value to be subtracted
+            first (bool, optional): Flag for order in relation to operator. Defaults to True.
+
+        Raises:
+            TypeError: Value must be DualNum or Number
+
+        Returns:
+            DualNum: Difference between Dual Numbers
+        """
         return self._sub(other, self_first=False)
     
-    """
-    Multiplication operator for DualNumbers 
-    """
     def _mul(self, other):
+        """Overloads * operator for DualNumbers 
+
+        Args:
+            other (DualNum): value to be multiplied
+
+        Raises:
+            TypeError: value must be DualNum or Number
+
+        Returns:
+            DualNum: returns product of Dual Numbers
+        """
         if isinstance(other, DualNum):
             return DualNum(self.real * other.real, self.real * other.epsilon + self.epsilon * other.real)
         elif isinstance(other, Number):
             return DualNum(self.real * other, self.epsilon * other)
         else:
             raise TypeError("Unsupported Type for __mul__")
-
-
-    """
-    Overloads the mult operator for dual numbers
-    """
-    def __mul__(self, other):
-       
-        return self._mul(other)
-    """
-    Overloads the reverese multoperator for dual numbers
-     """
-    def __rmul__(self, other):
-       
-        return self._mul(other)
-
-
-        
-    """
-    Division operator for dual numbers
-    self_numerator: flag for order in operator 
-    returns: Quotient of Dual Division
-    """
-    def _div(self, other, self_numerator=True):
    
+    def __mul__(self, other):
+        """Overloads * operator for DualNumbers 
+
+        Args:
+            other (DualNum): value to be multiplied
+
+        Raises:
+            TypeError: value must be DualNum or Number
+
+        Returns:
+            DualNum: returns product of Dual Numbers
+        """
+        return self._mul(other)
+    
+    def __rmul__(self, other):
+        """Overloads reverse * operator for DualNumbers 
+
+        Args:
+            other (DualNum): value to be multiplied
+
+        Raises:
+            TypeError: value must be DualNum or Number
+
+        Returns:
+            DualNum: returns product of Dual Numbers
+        """
+        return self._mul(other)
+    
+    def _div(self, other, self_numerator=True):
+        """Overloads / operator for Dual 
+        Args:
+            other (DualNum): value to divide by 
+            self_numerator (bool, optional): flag to tell if value is numerator or not. Defaults to True.
+
+        Raises:
+            ZeroDivisionError: Cannot divide by 0
+            ZeroDivisionError: Cannot divide by 0
+            ZeroDivisionError: Cannot divide by 0
+            TypeError: Value must be DualNum or Number
+
+        Returns:
+            DualNum: difference between DualNum
+        """
         if self_numerator and isinstance(other, DualNum):
             if other.real == 0:
                 raise ZeroDivisionError("Attempting to divide by a zero")
             else:
                 div_real = self.real / other.real
-                div_dual = -1 * (self.real * other.complex- self.complex * other.real) / other.real ** 2
+                div_dual = -1 * (self.real * other.epsilon- self.epsilon * other.real) / other.real ** 2
                 return DualNum(div_real, div_dual)
         elif self_numerator and isinstance(other, Number):
             if other == 0:
@@ -133,22 +208,59 @@ class DualNum:
         return self._div(other)
 
     def __rtruediv__(self, other):
-       
+        """
+        Overloads reverse / operator for Dual Numbers
+        self_numerator: Flag for if value is numerator
+        other: Dual Number to be divided
+        returns: Quotient of Dual Division
+        """
         return self._div(other, self_numerator=False)
 
     def __div__(self, other):
-        
+        """Overloads / operator for Dual 
+        Args:
+            other (DualNum): value to divide by 
+
+        Raises:
+            ZeroDivisionError: Cannot divide by 0
+            ZeroDivisionError: Cannot divide by 0
+            ZeroDivisionError: Cannot divide by 0
+            TypeError: Value must be DualNum or Number
+
+        Returns:
+            DualNum: difference between DualNum
+        """
         return self._div(other)
 
     def __rdiv__(self, other):
+        """Overloads reverse / operator for Dual 
+        Args:
+            other (DualNum): value to divide by 
+
+        Raises:
+            ZeroDivisionError: Cannot divide by 0
+            ZeroDivisionError: Cannot divide by 0
+            ZeroDivisionError: Cannot divide by 0
+            TypeError: Value must be DualNum or Number
+
+        Returns:
+            DualNum: difference between DualNum
+        """ 
         return self._div(other, self_numerator=False)
 
-    """
-    Power operator for Dual Numbers
-    self_base: flag to determine if number is base or not
-    """
     def _pow(self, other, self_base=True):
-       
+        """Overloads ** operator 
+
+        Args:
+            other (DualNum): DualNum
+            self_base (bool, optional): flag to declare order in relation to operator Defaults to True.
+
+        Raises:
+            TypeError: Value must be DualNum or Number
+
+        Returns:
+            DualNum: DualNum raised to power
+        """
         if self_base and isinstance(other, Number):
             return DualNum(self.real ** other, self.epsilon * other * (self.real ** (other - 1)))
         elif self_base and isinstance(other, DualNum):
@@ -161,13 +273,38 @@ class DualNum:
             raise TypeError("Unsupported Type for __pow__")
   
     def __pow__(self, other):
+        """Overloads ** operator
+
+        Args:
+            other (DualNum): DualNum Power
+
+        Returns:
+            DualNum: expontiated DualNum
+        """
         return self._pow(other)
 
     def __rpow__(self, other):
-        
+        """Overloads reverse ** operator
+
+        Args:
+            other (DualNum): DualNum Base
+
+        Returns:
+            DualNum: exponentiated DualNum
+        """
         return self._pow(other, self_base=False)
 
     def __cmp__(self, other):
+        """
+        Args:
+            other (DualNum): Value to be compared to 
+
+        Raises:
+            TypeError: Value must be DualNum or number
+
+        Returns:
+            DualNum: Comparison Value 
+        """
         if isinstance(other, DualNum):
             return self.real - other.real
         elif isinstance(other, Number):
