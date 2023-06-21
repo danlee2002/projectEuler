@@ -312,3 +312,4 @@ class DualNum:
         else:
             raise TypeError("Unsupported Type for __cmp__")
 
+
