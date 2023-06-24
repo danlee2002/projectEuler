@@ -82,6 +82,4 @@ def sqrt(x):
        return DualNum(math.sqrt(x.real), (0.5 / math.sqrt(x.real)) * x.real) 
     else:
         return sqrt(x)
-
-    
-
+ 

@@ -311,5 +311,3 @@ class DualNum:
             return self.real - other
         else:
             raise TypeError("Unsupported Type for __cmp__")
-
-
